@@ -26,7 +26,7 @@ public class HomeController {
     @Autowired
     private JobRepository jobRepository;
     @Autowired
-    private skillRepository skillRepository;
+    private SkillRepository skillRepository;
 
     @RequestMapping("")
     public String index(Model model) {
@@ -48,19 +48,20 @@ public class HomeController {
 
     @PostMapping("add")
     public String processAddJobForm(@ModelAttribute @Valid Job newJob,
-                                    Errors errors, Model model, @RequestParam int employerId) {
+//                                    Errors errors, Model model, @RequestParam int employerId) {
                                     Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
 
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
-            return "add";
+//            model.addAttribute(new Job());
+            return "redirect:add";
         }
 
-        return "redirect:";
-        Optional employerResult = employerRepository.findById((employerId));
+//        return "redirect:";
+        Optional<Employer> employerResult = employerRepository.findById((employerId));
         if (employerResult.isPresent()) {
-            Employer employer = (Employer) employerResult.get();
+            Employer employer = employerResult.get();
             newJob.setEmployer(employer);
             List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
             newJob.setSkills(skillObjs);
@@ -73,8 +74,8 @@ public class HomeController {
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
 
-            return "view";
-            Optional jobResult = jobRepository.findById(jobId);
+//            return "view";
+            Optional<Job> jobResult = jobRepository.findById(jobId);
             if (jobResult.isEmpty()) {
                 model.addAttribute("title", "Invalid Job ID of" + jobId);
                 return "redirect:";

@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("Skills")
+@RequestMapping("skills")
 public class SkillController {
 
     @Autowired
@@ -44,7 +44,7 @@ public class SkillController {
                                       Errors errors, Model model) {
 
         if (errors.hasErrors()) {
-            return "Skills/add";
+            return "skills/add";
         }
         skillRepository.save(newSkill);
         return  "redirect:";
